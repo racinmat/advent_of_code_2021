@@ -6,7 +6,7 @@ Benchmarks
 
 |   ∘ | part1_time | part2_time | part1_memory | part2_memory |
 | ---:| ----------:| ----------:| ------------:| ------------:|
-|   1 | 208.100 μs | 268.100 μs |   192.45 KiB |   332.80 KiB |
+|   1 | 209.300 μs | 280.400 μs |   192.45 KiB |   364.30 KiB |
 
 ## Initialization
 
