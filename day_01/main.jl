@@ -2,6 +2,7 @@ module Day01
 
 using DrWatson
 quickactivate(@__DIR__)
+using Pipe:@pipe
 include(projectdir("misc.jl"))
 
 const cur_day = parse(Int, splitdir(@__DIR__)[end][5:end])
@@ -10,13 +11,13 @@ process_data() = raw_data |> read_numbers
 
 function part1()
     data = process_data()
-    mapreduce(>(0), +, diff(data))
+    @pipe data |> diff |> mapreduce(>(0), +, _)
 end
 
 function part2()
     data = process_data()
     windows = [sum(data[i-2:i]) for i in 3:length(data)]
-    mapreduce(>(0), +, diff(windows))
+    @pipe windows |> diff |> mapreduce(>(0), +, _)
 end
 
 
