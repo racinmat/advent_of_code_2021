@@ -23,9 +23,9 @@ function process_row_part1((depth, forward), (direction, value))
     end
 end
 
-function process_row_part2((depth, forward), (direction, value, aim))
+function process_row_part2((depth, forward, aim), (direction, value))
     if direction == "forward"
-        depth, forward + value, aim
+        depth + value * aim, forward + value, aim
     elseif direction == "up"
         depth, forward, aim - value
     elseif direction == "down"
@@ -35,14 +35,14 @@ end
 
 function part1()
     data = process_data()
-    coords = reduce(process_row, data, init=(0, 0))
+    coords = reduce(process_row_part1, data, init=(0, 0))
     reduce(*, coords)
 end
 
 function part2()
     data = process_data()
-    coords = reduce(process_row, data, init=(0, 0, 0))
-    reduce(*, coords)
+    depth, forward, aim = reduce(process_row_part2, data, init=(0, 0, 0))
+    depth * forward
 end
 
 
