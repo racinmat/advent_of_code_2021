@@ -21,8 +21,8 @@ function filter_indices(data, comparison)
     idxs = trues(size(data, 2))
     cur_pos = 1
     while sum(idxs) > 1
-        keep_bit = sum(data[cur_pos, idxs]) .>= sum(idxs) / 2
-        idxs[idxs] .&= comparison(data[cur_pos, idxs], keep_bit)
+        keep_bit = sum(view(data, cur_pos, idxs)) .>= sum(idxs) / 2
+        idxs[idxs] .&= comparison(view(data, cur_pos, idxs), keep_bit)
         cur_pos += 1
     end
     findfirst(idxs)
