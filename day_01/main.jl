@@ -11,13 +11,12 @@ process_data() = raw_data |> read_numbers
 
 function part1()
     data = process_data()
-    @pipe data |> diff |> mapreduce(>(0), +, _)
+    @pipe data |> diff |> count(>(0), _)
 end
 
 function part2()
     data = process_data()
-    windows = [sum(data[i-2:i]) for i in 3:length(data)]
-    @pipe windows |> diff |> mapreduce(>(0), +, _)
+    count(data[i] > data[i - 3] for i in 4:length(data))
 end
 
 
