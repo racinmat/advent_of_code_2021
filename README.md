@@ -4,11 +4,12 @@ Solutions of annual coding challenge https://adventofcode.com/ written in Julia.
 
 Benchmarks
 
-|   ∘ | part1_time | part2_time | part1_memory | part2_memory |
-| ---:| ----------:| ----------:| ------------:| ------------:|
-|   1 | 274.200 μs | 283.300 μs |   192.45 KiB |   176.70 KiB |
-|   2 | 520.000 μs | 552.700 μs |   361.81 KiB |   361.81 KiB |
-|   3 | 351.000 μs | 449.600 μs |   286.41 KiB |   411.69 KiB |
+|   ∘ | part1_time | part2_time | part1_memory | part2_memory |   
+| ---:| ----------:| ----------:| ------------:| ------------:|   
+|   1 | 210.500 μs | 214.200 μs |   192.45 KiB |   176.70 KiB |   
+|   2 | 367.900 μs | 367.900 μs |   361.81 KiB |   361.81 KiB |   
+|   3 | 325.000 μs | 363.700 μs |   286.53 KiB |   411.77 KiB |   
+|   4 | 670.700 μs |   2.610 ms |   398.90 KiB |  1023.68 KiB |   
 
 ## Initialization
 
