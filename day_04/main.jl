@@ -51,10 +51,12 @@ function part2()
     numbers, grids = process_data()
     win_board = nothing
     last_num = nothing
+    prev_sum = match_all_cols(grids) .+ match_all_rows(grids)
     for i in numbers
-        win_board = argmin(match_all_cols(grids) .+ match_all_rows(grids))
+        win_board = argmin(prev_sum)
         grids[grids .== i] .= checked_const
-        if minimum(match_all_cols(grids) .+ match_all_rows(grids)) == 1
+        prev_sum = match_all_cols(grids) .+ match_all_rows(grids)
+        if minimum(prev_sum) == 1
             last_num = i
             break
         end
@@ -69,8 +71,10 @@ if false
 # Day04.reset_timer!(Day04.to)
 println(Day04.part1())
 # show(Day04.to)
-
 Day04.submit(Day04.part1(), Day04.cur_day, 1)
+
+# Day04.reset_timer!(Day04.to)
 println(Day04.part2())
+# show(Day04.to)
 Day04.submit(Day04.part2(), Day04.cur_day, 2)
 end
