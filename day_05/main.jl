@@ -15,16 +15,16 @@ const raw_data = cur_day |> read_input
 # const raw_data = cur_day |> read_file("input_test.txt")
 
 parse_row(x) = split(x, " -> ") .|> (x->split(x, ",") .|> x->parse(Int32, x)) |> x->reduce(hcat, x)
-is_axis_aligned(x::Matrix) = x[1,1] == x[1,2] || x[2,1] == x[2,2]
+is_axis_aligned(x::Matrix) = @inbounds x[1,1] == x[1,2] || x[2,1] == x[2,2]
 process_data() = raw_data |> read_lines .|> parse_row
 
 function assign2points_between!(grid, i)
-    #= @timeit to "dif" =# dif = i[:,2] - i[:,1]
+    #= @timeit to "dif" =# @inbounds dif = i[:,2] - i[:,1]
     #= @timeit to "max_dif" =# max_dif = maximum(abs, dif)
     #= @timeit to "normed" =# normed_vec = dif .÷ max_dif
     #= @timeit to "point_list" =# for j in 0:max_dif
-        k, l = i[:,1].+normed_vec*j
-        grid[k, l] += 1
+        @inbounds k, l = i[:,1].+normed_vec*j
+        @inbounds grid[k, l] += 1
     end
 end
 
@@ -79,4 +79,6 @@ println(Day05.part1())
 Day05.submit(Day05.part1(), Day05.cur_day, 1)
 println(Day05.part2())
 Day05.submit(Day05.part2(), Day05.cur_day, 2)
+@btime Day05.part1()
+@btime Day05.part2()
 end

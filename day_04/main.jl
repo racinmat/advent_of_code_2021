@@ -23,14 +23,14 @@ const checked_const = -1
 match_all_cols(y, val=checked_const) = match_all_dim(y, val, eachcol)
 match_all_rows(y, val=checked_const) = match_all_dim(y, val, eachrow)
 match_all_dim(y, val, eachf) = (any(row -> all(==(val), row), eachf(mat)) for mat in eachslice(y, dims=3))
-sum_unchecked(grids, win_board) = sum(grids[grids[:, :, win_board] .!= checked_const, win_board])
+sum_unchecked(grids, win_board) = @inbounds sum(grids[grids[:, :, win_board] .!= checked_const, win_board])
 
 function part1()
     numbers, grids = process_data()
     win_board = nothing
     last_num = nothing
     for i in numbers
-        grids[grids .== i] .= checked_const
+        @inbounds grids[grids .== i] .= checked_const
         match_cols = match_all_cols(grids)
         if any(match_cols)
             win_board = argmax(match_cols)
@@ -54,7 +54,7 @@ function part2()
     prev_sum = match_all_cols(grids) .+ match_all_rows(grids)
     for i in numbers
         win_board = argmin(prev_sum)
-        grids[grids .== i] .= checked_const
+        @inbounds grids[grids .== i] .= checked_const
         prev_sum = match_all_cols(grids) .+ match_all_rows(grids)
         if minimum(prev_sum) == 1
             last_num = i
@@ -77,4 +77,6 @@ Day04.submit(Day04.part1(), Day04.cur_day, 1)
 println(Day04.part2())
 # show(Day04.to)
 Day04.submit(Day04.part2(), Day04.cur_day, 2)
+@btime Day04.part1()
+@btime Day04.part2()
 end

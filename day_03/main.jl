@@ -22,7 +22,7 @@ function filter_indices(data, comparison)
     cur_pos = 1
     while sum(idxs) > 1
         keep_bit = sum(view(data, cur_pos, idxs)) .>= sum(idxs) / 2
-        idxs[idxs] .&= comparison(view(data, cur_pos, idxs), keep_bit)
+        @inbounds idxs[idxs] .&= comparison(view(data, cur_pos, idxs), keep_bit)
         cur_pos += 1
     end
     findfirst(idxs)
@@ -45,4 +45,6 @@ println(Day03.part1())
 Day03.submit(Day03.part1(), Day03.cur_day, 1)
 println(Day03.part2())
 Day03.submit(Day03.part2(), Day03.cur_day, 2)
+@btime Day03.part1()
+@btime Day03.part2()
 end

@@ -23,8 +23,11 @@ end
 end # module
 
 if false
+using BenchmarkTools
 println(Day01.part1())
 Day01.submit(Day01.part1(), Day01.cur_day, 1)
 println(Day01.part2())
 Day01.submit(Day01.part2(), Day01.cur_day, 2)
+@btime Day01.part1()
+@btime Day01.part2()
 end
