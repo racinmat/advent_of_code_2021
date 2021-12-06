@@ -4,14 +4,16 @@ Solutions of annual coding challenge https://adventofcode.com/ written in Julia.
 
 Benchmarks
 
+on my laptop when powered:
+
 |   ∘ | part1_time | part2_time | part1_memory | part2_memory |
 | ---:| ----------:| ----------:| ------------:| ------------:|
-|   1 | 209.400 μs | 210.800 μs |   192.45 KiB |   176.70 KiB |
-|   2 | 378.900 μs | 369.800 μs |   361.81 KiB |   361.81 KiB |
-|   3 | 319.400 μs | 357.900 μs |   286.53 KiB |   411.77 KiB |
-|   4 | 682.800 μs |   1.903 ms |   398.90 KiB |   898.84 KiB |
-|   5 |  14.233 ms |  23.637 ms |    24.87 MiB |    42.26 MiB |
-|   6 |  46.600 μs |  49.300 μs |   185.89 KiB |   208.52 KiB |
+|   1 | 213.800 μs | 214.300 μs |   192.45 KiB |   176.70 KiB |
+|   2 | 379.100 μs | 373.200 μs |   361.81 KiB |   361.81 KiB |
+|   3 | 328.800 μs | 364.700 μs |   286.41 KiB |   411.69 KiB |
+|   4 | 692.500 μs |   1.975 ms |   398.90 KiB |   898.84 KiB |
+|   5 |  14.494 ms |  24.506 ms |    24.87 MiB |    42.25 MiB |
+|   6 |  39.300 μs |  41.300 μs |   174.30 KiB |   195.52 KiB 
 
 ## Initialization
 

@@ -14,7 +14,7 @@ const cur_day = parse(Int, splitdir(@__DIR__)[end][5:end])
 const raw_data = cur_day |> read_input
 # const raw_data = cur_day |> read_file("input_test.txt")
 
-parse_row(x) = split(x, " -> ") .|> (x->split(x, ",") .|> x->parse(Int32, x)) |> x->reduce(hcat, x)
+parse_row(x) = split(x, " -> ") .|> (x->split(x, ",") .|> x->parse(Int16, x)) |> x->reduce(hcat, x)
 is_axis_aligned(x::Matrix) = @inbounds x[1,1] == x[1,2] || x[2,1] == x[2,2]
 process_data() = raw_data |> read_lines .|> parse_row
 
@@ -41,7 +41,7 @@ function part1()
     #= @timeit to "min_x" =# min_x = min(min1, min3)
     #= @timeit to "max_y" =# max_y = max(max2, max4)
     #= @timeit to "min_y" =# min_y = min(min2, min4)
-    #= @timeit to "grid" =# grid = OffsetArray(zeros(Int8, 1-min_x+max_x, 1-min_y+max_y), (min_x:max_x, min_y:max_y))
+    #= @timeit to "grid" =# grid = OffsetArray(zeros(UInt8, 1-min_x+max_x, 1-min_y+max_y), (min_x:max_x, min_y:max_y))
     #= @timeit to "axis_aligned" =# axis_aligned = filter(is_axis_aligned, data)
     # i = axis_aligned[1]
     
@@ -61,7 +61,7 @@ function part2()
     #= @timeit to "min_x" =# min_x = min(min1, min3)
     #= @timeit to "max_y" =# max_y = max(max2, max4)
     #= @timeit to "min_y" =# min_y = min(min2, min4)
-    grid = OffsetArray(zeros(Int8, 1-min_x+max_x, 1-min_y+max_y), (min_x:max_x, min_y:max_y))
+    grid = OffsetArray(zeros(UInt8, 1-min_x+max_x, 1-min_y+max_y), (min_x:max_x, min_y:max_y))
     for i in data
         assign2points_between!(grid, i)
     end
