@@ -17,9 +17,9 @@ function part1()
 end
 
 function part2()
-    data = process_data()
+    data = Int32.(process_data())
     d_min, d_max = extrema(data)
-    dist_prices = OffsetArray(cumsum(0:d_max),0:d_max)
+    dist_prices = OffsetArray(Int32.(cumsum(0:d_max)),0:d_max)
     minimum(i -> sum(dist_prices[abs.(data .- i)]), d_min:d_max)
 end
 
