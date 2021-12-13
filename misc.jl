@@ -27,7 +27,7 @@ function submit(answer, day::Int, part::Int)
 end
 
 read_lines(data::AbstractString, delim='\n') = split(data, delim)
-read_numbers(data::AbstractString, delim='\n') = parse.(Int, read_lines(data, delim))
+read_numbers(data::AbstractString, delim='\n', dtype=Int) = parse.(dtype, read_lines(data, delim))
 read_number(data::AbstractString) = parse(Int, data)
 
 function test_input(day::Int)
