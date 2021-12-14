@@ -2,26 +2,36 @@ module Day14
 
 using DrWatson
 quickactivate(@__DIR__)
-using StatsBase
+using StatsBase, DataStructures
 include(projectdir("misc.jl"))
 
 const cur_day = parse(Int, splitdir(@__DIR__)[end][5:end])
-# const raw_data = cur_day |> read_input
-const raw_data = cur_day |> read_file("input_test.txt")
+const raw_data = cur_day |> read_input
+# const raw_data = cur_day |> read_file("input_test.txt")
 function read_pattern(row)
     k,v = split(row, " -> ")
     k => v
 end
 process_data() = raw_data |> x->split(x, "\n\n") .|> read_lines |> x->(x[1][1],Dict(read_pattern.(x[2])))
 
-function iteration(data, patterns)
+function iteration(data::AbstractString, patterns)
     new_data = data[1:1]
     i = 1
     for i in 1:length(data)-1
         if haskey(patterns, data[i:i+1])
             new_data *= patterns[data[i:i+1]] * data[i+1]
-        # else
-        #     new_data *= data[i:i+1]
+        end
+    end
+    new_data
+end
+
+function iteration(data::AbstractDict, patterns)
+    new_data = copy(data)
+    for (k,v) in data
+        if haskey(patterns, k)
+            new_data[k[1]*patterns[k]] += v
+            new_data[patterns[k]*k[2]] += v
+            new_data[k] -= v
         end
     end
     new_data
@@ -29,31 +39,33 @@ end
 
 function part1()
     data, patterns = process_data()
-    prev_len = 0
-    a_len = length(data)
-    a_hist = countmap(data)
-    @info "len" a_len a_hist
+    data_h = DefaultDict(0, countmap(data[i:i+1] for i in 1:length(data)-1))
     num_steps = 10
     for i in 1:num_steps
-        prev_len = a_len
-        prev_hist = a_hist
-        data = iteration(data, patterns)
-        a_len = length(data)
-        a_hist = countmap(data)
-        hist_diff = Dict(k => v-get(prev_hist,k,0) for (k,v) in a_hist)
-        @info "len" a_len (a_len - prev_len) a_hist hist_diff
+        data_h = iteration(data_h, patterns)
     end
-    a, b = data |> countmap |> values |> extrema
+    new_d = DefaultDict(0)
+    for (k,v) in data_h
+        new_d[k[1]] += v
+    end
+    new_d[data[end]] += 1
+    a, b = new_d |> values |> extrema
     b - a
 end
 
 function part2()
     data, patterns = process_data()
+    data_h = DefaultDict(0, countmap(data[i:i+1] for i in 1:length(data)-1))
     num_steps = 40
     for i in 1:num_steps
-        data = iteration(data, patterns)
+        data_h = iteration(data_h, patterns)
     end
-    a, b = data |> countmap |> values |> extrema
+    new_d = DefaultDict(0)
+    for (k,v) in data_h
+        new_d[k[1]] += v
+    end
+    new_d[data[end]] += 1
+    a, b = new_d |> values |> extrema
     b - a
 end
 
