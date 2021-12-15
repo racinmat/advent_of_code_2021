@@ -137,7 +137,6 @@ if false
 using BenchmarkTools
 println(Day08.part1())
 @btime Day08.part1()
-@btime Day08.part1()
 Day08.submit(Day08.part1(), Day08.cur_day, 1)
 Day08.reset_timer!(Day08.to)
 println(Day08.part2())
