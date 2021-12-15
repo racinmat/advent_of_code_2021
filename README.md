@@ -22,6 +22,7 @@ on my laptop when powered:
 |  12 |  39.067 ms |   12.527 s |    22.09 MiB |    31.73 GiB |
 |  13 | 860.000 μs |   1.693 ms |   650.64 KiB |     1.02 MiB |
 |  14 | 747.800 μs |   3.190 ms |   584.67 KiB |     2.48 MiB |
+|  15 |  70.996 ms |    4.127 s |    75.51 MiB |     1.84 GiB |
 
 ## Initialization
 

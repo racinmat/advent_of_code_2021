@@ -38,39 +38,35 @@ function part1()
     data = process_data()
     g = build_graph(data)
     data_s = size(data)
-    the_way = a_star(g, LinearIndices(size(data))[1,1], LinearIndices(size(data))[size(data)...])
+    the_way = a_star(g, LinearIndices(data_s)[1,1], LinearIndices(data_s)[data_s...])
     sum(get_prop.(Ref(g), the_way, :weight))
 end
 
 function part2()
     data = process_data()
-    # data = reshape([8],(1,1))
-    # data_new = data .+ 1
-    # data_new[data_new .> 9] .= 1
     new_data = repeat(data, 5, 5)
-    i = 2
-    j=1
     x,y = size(data)
     for i in 1:5
         for j in 1:5
             i == 1 && j == 1 && continue
+            prev_offset_x = (i-2)*x
+            now_offset_x = (i-1)*x
+            prev_offset_y = (j-2)*y
+            now_offset_y = (j-1)*y
             if j == 1
-                prev_offset = (i-2)*x
-                now_offset = (i-1)*x
-                new_grid = @view new_data[(1+now_offset:x+now_offset),1:y]
-                new_grid .= new_data[(1+prev_offset:x+prev_offset),1:y] .+ 1
+                new_grid = @view new_data[1+now_offset_x:x+now_offset_x,1+now_offset_y:y+now_offset_y]
+                new_grid .= new_data[1+prev_offset_x:x+prev_offset_x,1+now_offset_y:y+now_offset_y] .+ 1
                 new_grid[new_grid .> 9] .= 1
             else
-                prev_offset = (j-2)*y
-                now_offset = (j-1)*y
-                new_grid = @view new_data[1:x,(1+now_offset:y+now_offset)]
-                new_grid .= new_data[1:x,(1+prev_offset:y+prev_offset)] .+ 1
+                new_grid = @view new_data[1+now_offset_x:x+now_offset_x,1+now_offset_y:y+now_offset_y]
+                new_grid .= new_data[1+now_offset_x:x+now_offset_x,1+prev_offset_y:y+prev_offset_y] .+ 1
                 new_grid[new_grid .> 9] .= 1
             end
         end
     end
     g = build_graph(new_data)
-    the_way = a_star(g, LinearIndices(size(new_data))[1,1], LinearIndices(size(new_data))[size(new_data)...])
+    data_s = size(new_data)
+    the_way = a_star(g, LinearIndices(data_s)[1,1], LinearIndices(data_s)[data_s...])
     sum(get_prop.(Ref(g), the_way, :weight))
 end
 
