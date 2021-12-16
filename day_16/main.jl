@@ -44,8 +44,7 @@ function parse_packet(bits)
     tid = bits2num(@view bits[4:6])
     version_sum = version
     if tid == 4
-        number, remainder = parse_literal_value(@view bits[7:end])
-        @timeit to "parse_literal_value" number, remainder = parse_literal_value(@view bits[7:end])
+        #= @timeit to "parse_literal_value" =# number, remainder = parse_literal_value(@view bits[7:end])
         return version_sum, number, remainder
     else
         ltid = bits2num(@view bits[7])
@@ -54,7 +53,7 @@ function parse_packet(bits)
             num_subpackets = bits2num(@view bits[8:8+11-1])
             sub_packets = @view bits[8+11:end]
             for i in 1:num_subpackets
-                @timeit to "parse_packet" a_version, val, sub_packets = parse_packet(sub_packets)
+                #= @timeit to "parse_packet" =# a_version, val, sub_packets = parse_packet(sub_packets)
                 version_sum += a_version
                 push!(vals, val)
             end
@@ -63,7 +62,7 @@ function parse_packet(bits)
             total_length = bits2num(@view bits[8:8+15-1])
             sub_packets = @view bits[8+15:8+15+total_length-1]
             while length(sub_packets) > 0
-                @timeit to "parse_packet" a_version, val, sub_packets = parse_packet(sub_packets)
+                #= @timeit to "parse_packet" =# a_version, val, sub_packets = parse_packet(sub_packets)
                 version_sum += a_version
                 push!(vals, val)
             end
@@ -89,8 +88,8 @@ function parse_packet(bits)
 end
 
 function part1()
-    @timeit to "process_data" bits = process_data()
-    @timeit to "parse_packet" version_sum, _, _ = parse_packet(bits)
+    #= @timeit to "process_data" =# bits = process_data()
+    #= @timeit to "parse_packet" =# version_sum, _, _ = parse_packet(bits)
     version_sum
 end
 
