@@ -49,4 +49,5 @@ read_file(filename::AbstractString) = day->read_file(day, filename)
 replace_chars(str::AbstractString, repls::Pair...) = foldl(replace, collect(repls), init=str)
 replace_chars(repls::Pair...) = x->replace_chars(x, repls...)
 
-bits2num(arr::BitArray) = sum(arr .* 2 .^ (length(arr)-1:-1:0))
+bits2num(arr::BitArray) = reduce((x,y)->x*2+y, arr)
+bits2num(arr::Bool) = Int(arr)

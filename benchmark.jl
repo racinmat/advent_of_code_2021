@@ -3,7 +3,7 @@ quickactivate(@__DIR__)
 using BenchmarkTools, ProgressMeter, Printf, Dates, Pkg, Latexify
 import DataFrames: DataFrame
 
-max_day = 14
+max_day = 16
 
 for day = 1:max_day
     include(@sprintf("day_%02d/main.jl", day))
@@ -42,10 +42,36 @@ end
 df = benchmarkAll()
 
 print(latexify(df, env=:mdtable, latex=false, side=1:max_day))
-a_day = 11
+a_day = 16
 df = benchmark(day=a_day)
 print(latexify(df, env=:mdtable, latex=false, side=a_day))
 
 # code for generating markdown from loading_data.jl
 using Literate
 Literate.markdown("loading_data.jl", ".", execute=true)
+
+# benchmark of my bits2num implementations
+bits2num1(arr::BitArray) = sum(arr .* 2 .^ (length(arr)-1:-1:0))
+bits2num1(arr::Bool) = Int(arr)
+
+bits2num2(arr::BitArray) = reduce((x,y)->x*2+y, arr)
+bits2num2(arr::Bool) = Int(arr)
+
+arr = BitVector([1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1])
+@btime bits2num1(arr)
+@btime bits2num2(arr)
+arr = BitVector([1,1,0,1])
+@btime bits2num1(arr)
+@btime bits2num2(arr)
+arr = true
+@btime bits2num1(arr)
+@btime bits2num2(arr)
+arr = BitVector([ones(Int,100); zeros(Int,100)])
+@btime bits2num1(arr)
+@btime bits2num2(arr)
+arr = trues(60)
+@btime bits2num1(arr)
+@btime bits2num2(arr)
+arr = falses(60)
+@btime bits2num1(arr)
+@btime bits2num2(arr)
