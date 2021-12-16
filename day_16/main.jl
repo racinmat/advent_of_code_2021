@@ -7,8 +7,8 @@ using Base.Iterators
 using TimerOutputs, BenchmarkTools
 include(projectdir("misc.jl"))
 
-const to = TimerOutput()
-reset_timer!(to)
+# const to = TimerOutput()
+# reset_timer!(to)
 
 const cur_day = parse(Int, splitdir(@__DIR__)[end][5:end])
 const raw_data = cur_day |> read_input
