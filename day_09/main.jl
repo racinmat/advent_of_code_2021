@@ -3,12 +3,13 @@ module Day09
 using DrWatson
 quickactivate(@__DIR__)
 using ImageFiltering, OffsetArrays, StatsBase
+using Pipe:@pipe
 include(projectdir("misc.jl"))
 
 const cur_day = parse(Int, splitdir(@__DIR__)[end][5:end])
 const raw_data = cur_day |> read_input
 # const raw_data = cur_day |> read_file("input_test.txt")
-process_data() = (raw_data |> read_lines .|> x->split(x, "") .|> x->parse.(Int16, x)) |> x->reduce(hcat, x)'
+process_data() = @pipe (raw_data |> read_lines .|> split(_, "") .|> parse.(Int8, _)) |> reduce(hcat, _)
 
 function find_lowpoints(data)
     k1 = OffsetArray([

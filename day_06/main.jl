@@ -18,7 +18,7 @@ function new_state(data)
     [new_data; ones(Int, count(data .== 0)) .* 8]
 end
 
-transition_matrix = [
+const transition_matrix = [
  #  8 7 6 5 4 3 2 1 0
     0 0 0 0 0 0 0 0 1 #8
     1 0 0 0 0 0 0 0 0 #7
@@ -29,28 +29,27 @@ transition_matrix = [
     0 0 0 0 0 1 0 0 0 #2
     0 0 0 0 0 0 1 0 0 #1
     0 0 0 0 0 0 0 1 0 #0
-]'
+]
 
-data2states(data) = reverse(counts(data, 0:8))'
+data2states(data) = reverse(counts(data, 0:8))
+
+iterate_days(states, num_days) = sum(transition_matrix ^ num_days * states)
 function part1()
     data = process_data()
     states = data2states(data)
     num_days = 80
+    iterate_days(states, num_days)
     # naive solution for part 1 and verification of the matrix approach
     # for i in 1:num_days
     #     data = new_state(data)
     # end
-    transition_matrix_total = transition_matrix ^ num_days
-    # length(data)
-    sum(states * transition_matrix_total)
 end
 
 function part2()
     data = process_data()
     states = data2states(data)
     num_days = 256
-    transition_matrix_total = transition_matrix ^ num_days
-    sum(states * transition_matrix_total)
+    iterate_days(states, num_days)
 end
 
 

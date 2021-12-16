@@ -3,12 +3,12 @@ module Day08
 using DrWatson
 quickactivate(@__DIR__)
 using Base.Iterators
-using BenchmarkTools, TimerOutputs
+# using BenchmarkTools, TimerOutputs
 include(projectdir("misc.jl"))
 parse_row(x) = split(x, " | ") .|> x->split(x, " ")
 
-const to = TimerOutput()
-reset_timer!(to)
+# const to = TimerOutput()
+# reset_timer!(to)
 
 const cur_day = parse(Int, splitdir(@__DIR__)[end][5:end])
 const raw_data = cur_day |> read_input
@@ -38,8 +38,8 @@ const num2seg = Dict(v=>k for (k,v) in seg2num)
 const num2seg_len = Dict(k=>length(v) for (k,v) in num2seg)
 
 function solve_row(pattern, output)
-    @timeit to "in_numbers" in_numbers = Dict(k-1=>v for (k,v) in enumerate(@.(pattern |> collect |> sort |> join)))
-    @timeit to "out_numbers" out_numbers = @.(output |> collect |> sort |> join)
+    #= @timeit to "in_numbers" =# in_numbers = Dict(k-1=>v for (k,v) in enumerate(@.(pattern |> collect |> sort |> join)))
+    #= @timeit to "out_numbers" =# out_numbers = @.(output |> collect |> sort |> join)
     # in_numbers has always 10 elements, 1 for each number, I don't need to map individual segments
     # I can map indices directly to numbers, here I'm grouping them by same lengths
 
@@ -86,11 +86,11 @@ function solve_options(is_valid, mapping)
     end
     a_letter, options = filter(kv->length(kv[2])>1, mapping) |> first
     i = 1
-    @timeit to "all_options" @inbounds for i in 1:length(options)
+    #= @timeit to "all_options" =# @inbounds for i in 1:length(options)
         mapping_try = copy(mapping)
         mapping_try[a_letter] = options[i:i]
         solution_valid = true
-        @timeit to "setdiff" @inbounds for k in setdiff(keys(mapping_try), Set(a_letter))
+        #= @timeit to "setdiff" =# @inbounds for k in setdiff(keys(mapping_try), Set(a_letter))
             mapping_try[k] = setdiff(mapping_try[k], mapping_try[a_letter])
             if isempty(mapping_try[k])
                 solution_valid = false
@@ -108,11 +108,11 @@ function solve_options2(is_valid, mapping)
         return Dict(k=>v[1] for (k, v) in mapping), length(unique(values(mapping))) == length(mapping)
     end
     a_letter, options = filter(kv->length(kv[2])>1, mapping) |> first
-    @timeit to "all_options" @inbounds for i in 1:length(options)
+    #= @timeit to "all_options" =# @inbounds for i in 1:length(options)
         mapping_try = copy(mapping)
         mapping_try[a_letter] = options[i:i]
         solution_valid = true
-        @timeit to "setdiff" @inbounds for k in setdiff(keys(mapping_try), Set(a_letter))
+        #= @timeit to "setdiff" =# @inbounds for k in setdiff(keys(mapping_try), Set(a_letter))
             mapping_try[k] = setdiff(mapping_try[k], mapping_try[a_letter])
             if isempty(mapping_try[k])
                 solution_valid = false

@@ -12,7 +12,7 @@ function read_pattern(row)
     k,v = split(row, " -> ")
     k => v
 end
-process_data() = raw_data |> x->split(x, "\n\n") .|> read_lines |> x->(x[1][1],Dict(read_pattern.(x[2])))
+process_data() = raw_data |> x->split(x, "\n\n") .|> read_lines |> x->(x[1][1], Dict(read_pattern.(x[2])))
 
 function iteration(data::AbstractString, patterns)
     new_data = data[1:1]

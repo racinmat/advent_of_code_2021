@@ -50,4 +50,5 @@ replace_chars(str::AbstractString, repls::Pair...) = foldl(replace, collect(repl
 replace_chars(repls::Pair...) = x->replace_chars(x, repls...)
 
 bits2num(arr::BitArray) = reduce((x,y)->x*2+y, arr)
+bits2num(arr::SubArray{T,U,BitVector}) where {T,U} = reduce((x,y)->x*2+y, arr)
 bits2num(arr::Bool) = Int(arr)

@@ -3,16 +3,16 @@ module Day07
 using DrWatson
 quickactivate(@__DIR__)
 using Pipe, Statistics
-using TimerOutputs, BenchmarkTools
+# using TimerOutputs, BenchmarkTools
 include(projectdir("misc.jl"))
 
 const cur_day = parse(Int, splitdir(@__DIR__)[end][5:end])
 const raw_data = cur_day |> read_input
 # const raw_data = cur_day |> read_file("input_test.txt")
-process_data() = @pipe raw_data |> read_numbers(_, ",", Int32)
+process_data() = @pipe raw_data |> read_numbers(_, ",", Int16)
 
-const to = TimerOutput()
-reset_timer!(to)
+# const to = TimerOutput()
+# reset_timer!(to)
 
 function part1()
     data = process_data()
@@ -24,9 +24,9 @@ end
 dist_part2(x) = x*(x+1)÷2
 
 function part2()
-    @timeit to "process_data" data = process_data()
-    @timeit to "extrema" d_min, d_max = extrema(data)
-    @timeit to "metric" minimum(i -> sum(dist_part2(abs(x - i)) for x in data), d_min:d_max)
+    #= @timeit to "process_data" =# data = process_data()
+    #= @timeit to "extrema" =# d_min, d_max = extrema(data)
+    #= @timeit to "metric" =# minimum(i -> sum(dist_part2(abs(x - i)) for x in data), d_min:d_max)
 end
 
 

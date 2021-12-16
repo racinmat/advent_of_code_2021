@@ -3,19 +3,22 @@ module Day13
 using DrWatson
 quickactivate(@__DIR__)
 using OffsetArrays, SparseArrays
+using Pipe:@pipe
 include(projectdir("misc.jl"))
 
 const cur_day = parse(Int, splitdir(@__DIR__)[end][5:end])
 const raw_data = cur_day |> read_input
 # const raw_data = cur_day |> read_file("input_test.txt")
 # const raw_data = cur_day |> read_file("input_test2.txt")
-process_coords(row) = (row |> x->split(x,",") .|> x->parse(Int32,x)) |> x->CartesianIndex(x...)
+# process_coords(row) = (row |> x->split(x,",") .|> x->parse(Int16,x)) |> x->CartesianIndex(x...)
+process_coords(row) = @pipe row |> split(_,",") |> parse.(Int16,_) |> CartesianIndex(_...)
+
 function process_foldings(row)
     m = match(r"fold along (\w)=(\d+)", row)
     m[1], parse(Int32, m[2])
 end
 process_data() = raw_data |> x->split(x, "\n\n") .|> read_lines |> x -> (process_coords.(x[1]), process_foldings.(x[2]))
-
+row = raw_data |> x->split(x, "\n\n") .|> read_lines |> first |> first
 function a_fold1(coords, fold_axis, fold_coord)
     if fold_axis == "y"
         [c[2] > fold_coord ? CartesianIndex(c[1], 2*fold_coord - c[2]) : c for c in coords]
