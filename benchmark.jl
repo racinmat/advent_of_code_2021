@@ -3,7 +3,7 @@ quickactivate(@__DIR__)
 using BenchmarkTools, ProgressMeter, Printf, Dates, Pkg, Latexify
 import DataFrames: DataFrame
 
-max_day = 16
+max_day = 17
 
 for day = 1:max_day
     include(@sprintf("day_%02d/main.jl", day))
@@ -41,9 +41,11 @@ end
 
 df = benchmarkAll()
 
+println()
 print(latexify(df, env=:mdtable, latex=false, side=1:max_day))
-a_day = 12
+a_day = 17
 df = benchmark(day=a_day)
+println()
 print(latexify(df, env=:mdtable, latex=false, side=a_day))
 
 # code for generating markdown from loading_data.jl

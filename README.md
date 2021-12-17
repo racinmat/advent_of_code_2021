@@ -24,6 +24,7 @@ on my laptop when powered:
 |  14 | 796.500 μs |   3.582 ms |   584.67 KiB |     2.48 MiB |
 |  15 |  59.262 ms |    4.102 s |    71.29 MiB |     1.79 GiB |
 |  16 | 312.700 μs | 305.300 μs |   370.19 KiB |   370.19 KiB |
+|  17 | 112.035 ms | 282.692 ms |    22.27 MiB |    69.13 MiB |
 
 on server: `~/julia-1.7.0/bin/julia benchmark.jl`
 
