@@ -607,11 +607,11 @@ struct DealIncrementInstruction <: Instruction
     i::Signed
 end
 function parse_instruction(row)
-    if match(r"cut -?\d+", row) != nothing
+    if match(r"cut -?\d+", row) !== nothing
         return CutInstruction(parse(Int128, match(r"cut (-?\d+)", row)[1]))
-    elseif match(r"deal into new stack", row) != nothing
+    elseif match(r"deal into new stack", row) !== nothing
         return DealNewInstruction()
-    elseif match(r"deal with increment \d+", row) != nothing
+    elseif match(r"deal with increment \d+", row) !== nothing
         return DealIncrementInstruction(parse(Int128, match(r"deal with increment (\d+)", row)[1]))
     else
         println("unknown")
