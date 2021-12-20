@@ -84,17 +84,6 @@ end
 dist = WeightedCityblock([1_000_000,1_000,1])
 # dist = WeightedCityblock([100,10,1])
 
-data = process_data()
-
-# beacon_positions = data[1][2]
-# trans_vec, base = find_viable_base(data[1][2], data[2][2])
-# beacons2_proj2ref = trans_vec .+ data[2][2] * base
-# beacon_positions = unique([beacon_positions[:,1:3]; beacons2_proj2ref], dims=1)
-# trans_vec, base = find_viable_base(beacon_positions, data[3][2])
-# trans_vec, base = find_viable_base(beacon_positions, data[4][2])
-# beacons2_proj2ref = trans_vec .+ data[4][2] * base
-# beacon_positions = unique([beacon_positions[:,1:3]; beacons2_proj2ref], dims=1)
-
 function part1()
     data = process_data()
     beacon_positions = data[0]
@@ -103,7 +92,7 @@ function part1()
     unprocessed_scanners
     while !isempty(unprocessed_scanners)
         i = dequeue!(unprocessed_scanners)
-        @info "examining scanner" i
+        # @info "examining scanner" i
         trans_vec, base = find_viable_base(beacon_positions, data[i])
         if isnothing(trans_vec) && isnothing(base)
             enqueue!(unprocessed_scanners, i)
@@ -112,7 +101,7 @@ function part1()
         beacons2_proj2ref = trans_vec .+ data[i] * base
         prev_len = size(beacon_positions, 1)
         beacon_positions = unique([beacon_positions; beacons2_proj2ref], dims=1)
-        @info "processed beacon" i prev_len length(beacon_positions)
+        # @info "processed beacon" i prev_len length(beacon_positions)
     end
     size(beacon_positions, 1)
 end
@@ -126,7 +115,7 @@ function part2()
     scanner_positions = [[0,0,0]]
     while !isempty(unprocessed_scanners)
         i = dequeue!(unprocessed_scanners)
-        @info "examining scanner" i
+        # @info "examining scanner" i
         trans_vec, base = find_viable_base(beacon_positions, data[i])
         if isnothing(trans_vec) && isnothing(base)
             enqueue!(unprocessed_scanners, i)
@@ -135,7 +124,7 @@ function part2()
         beacons2_proj2ref = trans_vec .+ data[i] * base
         prev_len = size(beacon_positions, 1)
         beacon_positions = unique([beacon_positions; beacons2_proj2ref], dims=1)
-        @info "processed beacon" i prev_len length(beacon_positions) trans_vec
+        # @info "processed beacon" i prev_len length(beacon_positions) trans_vec
         push!(scanner_positions, trans_vec[1,:])
     end
     pairwise(cityblock, scanner_positions) |> maximum
