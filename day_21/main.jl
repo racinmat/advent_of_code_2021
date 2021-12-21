@@ -42,7 +42,8 @@ end
 
 const all_die_options = reshape(product(1:3, 1:3, 1:3) |> collect, :)
 function play_game(positions, scores, player1)
-    max_score = 21
+    # max_score = 21
+    max_score = 6
     i = all_die_options |> first
     wins1, wins2 = 0, 0
     for i in all_die_options
@@ -69,11 +70,11 @@ end
 function part2()
     positions = process_data()
     # this takes too long, does not work
-    # scores = Dict(k=>0 for k in keys(positions))
-    # wins1, wins2 = 0, 0
-    # player1 = true
-    # wins1, wins2 = play_game(positions, scores, player1)
-    # max(wins1, wins2)
+    scores = Dict(k=>0 for k in keys(positions))
+    wins1, wins2 = 0, 0
+    player1 = true
+    wins1, wins2 = play_game(positions, scores, player1)
+    max(wins1, wins2)
 end
 
 
