@@ -20,14 +20,10 @@ function perform_iteration(a_big_map, inner_range_x, inner_range_y, pattern, to1
         a_big_map_new = falses(size(a_big_map))
     end
     incr = 1
-    # incr = 3
-    # incr = 4
     inner_range_x = (inner_range_x.start-incr):(inner_range_x.stop+incr)
     inner_range_y = (inner_range_y.start-incr):(inner_range_y.stop+incr)
     for i in CartesianIndices((inner_range_x, inner_range_y))
-        # a_range_x = max(i.I[1]-1,1):min(i.I[1]+1, size(a_map,1))
         a_range_x = i.I[1]-1:i.I[1]+1
-        # a_range_y = max(i.I[2]-1,1):min(i.I[2]+1, size(a_map,1))
         a_range_y = i.I[2]-1:i.I[2]+1
         
         a_idx = bits2num(a_big_map[a_range_x, a_range_y]' |> flatten)
@@ -41,8 +37,6 @@ end
 function part1()
     pattern, a_map = process_data()
     a_big_map = zeros(Bool, size(a_map).+6)
-    # a_big_map = zeros(Bool, size(a_map).+10)
-    # a_big_map = falses(size(a_map).+20)
     a_big_center_x, a_big_center_y = size(a_big_map) .÷ 2
     a_center_x, a_center_y = size(a_map) .÷ 2
     inner_range_x = a_big_center_x .+ ((1:size(a_map,1)) .- a_center_x)
@@ -60,8 +54,6 @@ end
 
 function part2()
     pattern, a_map = process_data()
-    # a_big_map = zeros(Bool, size(a_map).+4)
-    # a_big_map = zeros(Bool, size(a_map).+10)
     a_big_map = falses(size(a_map).+102)
     a_big_center_x, a_big_center_y = size(a_big_map) .÷ 2
     a_center_x, a_center_y = size(a_map) .÷ 2
@@ -82,7 +74,9 @@ end
 end # module
 
 if false
+using BenchmarkTools
 println(Day20.part1())
+@btime Day20.part1()
 Day20.submit(Day20.part1(), Day20.cur_day, 1)
 println(Day20.part2())
 Day20.submit(Day20.part2(), Day20.cur_day, 2)
