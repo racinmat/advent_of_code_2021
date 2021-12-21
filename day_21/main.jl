@@ -3,6 +3,7 @@ module Day21
 using DrWatson
 quickactivate(@__DIR__)
 using Base.Iterators, StatsBase
+# using BenchmarkTools
 include(projectdir("misc.jl"))
 
 function parse_row(row)
@@ -43,26 +44,31 @@ end
 # const all_die_options = reshape(product(1:3, 1:3, 1:3) |> collect, :)
 const all_die_options = reshape(product(1:3, 1:3, 1:3) |> collect, :) .|> sum |> countmap
 
-function play_game(positions, scores, player1)
+function play_game(pos1, pos2, score1, score2, player1)
     max_score = 21
     # max_score = 10
-    # i = all_die_options |> first
     wins1, wins2 = 0, 0
+    # i = all_die_options |> first
     # if same sum has occured more times, I can count it once and multiply win nums
+    # i_sum, num_occurs = all_die_options |> first
     for (i_sum, num_occurs) in all_die_options
-        positions2 = copy(positions)
-        scores2 = copy(scores)
-        p_idx = player1 ? 1 : 2
-        positions2[p_idx] = incr_pos_mod(positions2[p_idx], i_sum)
-        scores2[p_idx] += positions2[p_idx]
-        if scores2 |> values |> maximum >= max_score
-            if scores2[1] >= max_score
+        pos1i, pos2i = pos1, pos2
+        score1i, score2i = score1, score2
+        if player1
+            pos1i = incr_pos_mod(pos1i, i_sum)
+            score1i += pos1i
+        else
+            pos2i = incr_pos_mod(pos2i, i_sum)
+            score2i += pos2i
+        end
+        if max(score1i, score2i) >= max_score
+            if score1i >= max_score
                 wins1 += num_occurs
             else
                 wins2 += num_occurs
             end
         else
-            wins1_i, wins2_i = play_game(positions2, scores2, !player1)
+            wins1_i, wins2_i = play_game(pos1i, pos2i, score1i, score2i, !player1)
             wins1 += wins1_i * num_occurs
             wins2 += wins2_i * num_occurs
         end
@@ -73,15 +79,17 @@ end
 function part2()
     # instead of the naive iteration, I can use histogram
     positions = process_data()
+    pos1 = positions[1]
+    pos2 = positions[2]
     # this takes too long, does not work
-    scores = Dict(k=>0 for k in keys(positions))
-    wins1, wins2 = 0, 0
+    # scores = Dict(k=>0 for k in keys(positions))
+    score1, score2 = 0, 0
     player1 = true
-    wins1, wins2 = play_game(positions, scores, player1)
+    wins1, wins2 = play_game(pos1, pos2, score1, score2, player1)
     max(wins1, wins2)
 end
-# for original implementation and max_score 6
-# (30498, 7203)
+# for original implementation and max_score 10
+# (18973591, 12657100)
 
 end # module
 
@@ -92,5 +100,6 @@ println(Day21.part1())
 Day21.submit(Day21.part1(), Day21.cur_day, 1)
 println(Day21.part2())
 @btime Day21.part2()
+# 3.043 ms (90741 allocations: 8.13 MiB)
 Day21.submit(Day21.part2(), Day21.cur_day, 2)
 end
