@@ -14,12 +14,8 @@ const raw_data = cur_day |> read_input
 process_data() = @pipe (raw_data |> read_lines .|> split(_, "") .|> parse.(Int8, _)) |> reduce(hcat, _)
 
 function build_graph(data)
-    g1 = data |> size |> collect |> Graphs.SimpleGraphs.grid
-    g2 = g1 |> edges |> SimpleDiGraphFromIterator
-    for e in edges(g1)
-        add_edge!(g2, e.dst, e.src)
-    end
-    g = g2 |> MetaDiGraph
+    # data |> size |> collect |> Graphs.SimpleGraphs.grid |> SimpleDiGraph creates oriented grid with edges in both directions
+    g = data |> size |> collect |> Graphs.SimpleGraphs.grid |> SimpleDiGraph |> MetaDiGraph
     for (i, j) in enumerate(CartesianIndices(data))
         set_prop!(g, i, :coords, j)
     end

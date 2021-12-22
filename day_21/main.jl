@@ -14,39 +14,44 @@ end
 const cur_day = parse(Int, splitdir(@__DIR__)[end][5:end])
 const raw_data = cur_day |> read_input
 # const raw_data = cur_day |> read_file("input_test.txt")
-process_data() = raw_data |> read_lines .|> parse_row |> Dict
+process_data() = raw_data |> read_lines .|> parse_row |> Dict |> x->(UInt8(x[1]), UInt8(x[2]))
 
 incr_pos_mod(a, b, base=10) = (a + b - 1) % base + 1
+incr_pos_mod(a::T, b::T, base=10) where T = (a + b - one(T)) % T(base) + one(T)
 
 function part1()
-    positions = process_data()
-    scores = Dict(k=>0 for k in keys(positions))
+    pos1, pos2 = process_data()
+    score1, score2 = zero(UInt8), zero(UInt8)
     dice = 1:100
     player1 = true
     # i = partition(cycle(dice), 3) |> first
     num_rolls = 0
     for i in partition(cycle(dice), 3)
         num_rolls += 3
-        p_idx = player1 ? 1 : 2
-        positions[p_idx] = incr_pos_mod(positions[p_idx], sum(i))
-        scores[p_idx] += positions[p_idx]
+        if player1
+            pos1 = incr_pos_mod(pos1, sum(i))
+            score1 += pos1
+        else
+            pos2 = incr_pos_mod(pos2, sum(i))
+            score2 += pos2
+        end
         player1 = !player1
-        if scores |> values |> maximum >= 1000
+        if max(score1, score2) >= 1000
             # @info "break" i
             break
         end
     end
     # positions
     # scores
-    minimum(values(scores)) * num_rolls
+    min(score1, score2) * num_rolls
 end
 
 # const all_die_options = reshape(product(1:3, 1:3, 1:3) |> collect, :)
-const all_die_options = reshape(product(1:3, 1:3, 1:3) |> collect, :) .|> sum |> countmap
+const all_die_options = reshape(product(1:3, 1:3, 1:3) |> collect, :) .|> sum |> countmap |> x->Dict(UInt8(k)=>v for (k,v) in x)
 
 function play_game(pos1, pos2, score1, score2, player1)
-    max_score = 21
-    # max_score = 10
+    max_score = UInt8(21)
+    # max_score = UInt8(10)
     wins1, wins2 = 0, 0
     # i = all_die_options |> first
     # if same sum has occured more times, I can count it once and multiply win nums
@@ -78,13 +83,12 @@ end
 
 function part2()
     # instead of the naive iteration, I can use histogram
-    positions = process_data()
-    pos1 = positions[1]
-    pos2 = positions[2]
+    pos1, pos2 = process_data()
     # this takes too long, does not work
     # scores = Dict(k=>0 for k in keys(positions))
-    score1, score2 = 0, 0
+    score1, score2 = zero(UInt8), zero(UInt8)
     player1 = true
+    
     wins1, wins2 = play_game(pos1, pos2, score1, score2, player1)
     max(wins1, wins2)
 end
@@ -100,6 +104,5 @@ println(Day21.part1())
 Day21.submit(Day21.part1(), Day21.cur_day, 1)
 println(Day21.part2())
 @btime Day21.part2()
-# 3.043 ms (90741 allocations: 8.13 MiB)
 Day21.submit(Day21.part2(), Day21.cur_day, 2)
 end
